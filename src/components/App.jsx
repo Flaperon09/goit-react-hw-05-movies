@@ -1,13 +1,6 @@
 import { lazy } from "react";
 import { Routes, Route } from "react-router-dom";
 import { GlobalStyle } from "../GlobalStyle";
-// import Home from "../pages/Home";
-// import Movies from "../pages/Movies";
-// import MovieDetails from "../pages/MovieDetails";
-// import Cast from "./Cast";
-// import Reviews from "./Reviews";
-// import NotFound from "../pages/NotFound";
-// import Header from "./Header";
 
 const Home = lazy(() => import('../pages/Home'));
 const Movies = lazy(() => import('../pages/Movies'));
@@ -38,5 +31,3 @@ export default function App () {
     </div>
   );
 };
-
-// export default App;

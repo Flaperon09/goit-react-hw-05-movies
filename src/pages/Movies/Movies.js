@@ -1,45 +1,48 @@
 import { Link, useSearchParams, useLocation } from "react-router-dom";
 import { getMoviesQuery } from '../../services';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Loader } from "components/Loader";
 import { MoviesList, MoviesListItem } from './Movies.styled';
 
-export default function Movies () {
+export default function Movies() {
+    const ref = useRef() // Ref для очистки input
 
     const location = useLocation();
 
-    const [searchParams, setSearchParams] = useSearchParams(); // Изменение строки запроса
+    const [searchParams, setSearchParams] = useSearchParams(); // Переменная запроса
     let query = searchParams.get("query") ?? ""; // Изменяемый параметр запроса
+
+    let searchWord = ''; // Переменная для хранения запросного слова
     
-    const [inputSearch, setInputSearch] = useState(''); // Поисковый запрос
     const [moviesQuery, setMoviesQuery] = useState([]); // Хранение ответа бекэнда
     const [load, setLoad] = useState(false);
 
     // === Запрос на бекэнд
     useEffect(() => {
-        if (inputSearch.length === 0) return;
+        if (query === '') return;
         setLoad(true);
-        getMoviesQuery(inputSearch)
+        getMoviesQuery(query)
             .then(response => setMoviesQuery(response))
             .finally(() => setLoad(false));
-    }, [inputSearch]);
+        ref.current.value = ''; // Очистка ref
+    }, [query]);
     
     // === Функция получения запроса
     const handleSubmit = (event) => {
         event.preventDefault();
-        // Получение запроса из поля input
-        setInputSearch(`${event.target[0].value.toLowerCase()}`);
+        // Изменение строки запроса
+        setSearchParams({ query: searchWord });
     };
 
-    // === Функция удаления "?query=" в строке запроса при очистке input
+    // === Функция получения запросного слова
     const updateQueryString = evt => {
-        evt.target.value === '' ? setSearchParams({}) : setSearchParams({ query: evt.target.value })
+        searchWord = evt.target.value.toLowerCase();
     }
 
     return (
         <div>
             <form onSubmit={handleSubmit}>
-                <input type="text" value={query} onChange={updateQueryString}></input>
+                <input type="text" ref={ref} onChange={updateQueryString}></input>
                 <button type="submit">Search</button>
             </form>
             <div>
