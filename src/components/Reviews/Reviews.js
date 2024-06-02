@@ -21,14 +21,19 @@ export default function Reviews () {
     return (
         <WrapperReviews>
             {load && <Loader />}
-            <ul>
-                {movieReviews.map(({ author, id, content }) =>
-                    <ReviewsItem key={id}>
-                        <ReviewsAuthor>Author: {author}</ReviewsAuthor>
-                        <p>{content}</p>
-                    </ReviewsItem>)}
-            </ul>
-
+            {/* Если нет обзоров, то выводится сообщение: "No reviews" */}
+            {movieReviews.length === 0
+                ? <h2>No reviews</h2>
+                :
+                <ul>
+                    {movieReviews.map(({ author, id, content }) =>
+                        <ReviewsItem key={id}>
+                            <ReviewsAuthor>Author: {author}</ReviewsAuthor>
+                            <p>{content}</p>
+                        </ReviewsItem>
+                    )}
+                </ul>
+            }
         </WrapperReviews>
     )
 };

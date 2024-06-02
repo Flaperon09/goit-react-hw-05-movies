@@ -21,23 +21,29 @@ export default function Cast () {
     return (
         <WrapperCast>
             {load && <Loader />}
-            <ul>
-                {movieCast.map(({ name, profile_path, character }) =>
-                    <CastItem key={name}>
-                        <p>{name}</p>
-                        <img
-                        src={
-                            profile_path
-                            ? `https://image.tmdb.org/t/p/w500${profile_path}`
-                            : `https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg`
-                            }
-                        alt={name}
-                        width="100px"
-                        />
-                        <p>Character: {character}</p>
-                    </CastItem>
-                )}
-            </ul>
+            {/* Если нет списка актеров, то выводится сообщение: "No information about actors" */}
+            {movieCast.length === 0
+                ? <h2>No information about actors</h2>
+                :
+                <ul>
+                    {movieCast.map(({ name, profile_path, character }) =>
+                        <CastItem key={name}>
+                            <p>{name}</p>
+                            <img
+                            src={
+                                profile_path
+                                ? `https://image.tmdb.org/t/p/w500${profile_path}`
+                                : `https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg`
+                                }
+                            alt={name}
+                            width="100px"
+                            />
+                            <p>Character: {character}</p>
+                        </CastItem>
+                    )}
+                </ul>
+            }
+
         </WrapperCast>
     )
 };
